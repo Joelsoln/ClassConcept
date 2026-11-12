@@ -59,6 +59,32 @@
   [data-lang="fr"] .en { display: none !important; }
   [data-lang="en"] .fr { display: none !important; }
 
+
+  /* ── TICKER BAND ── */
+  .ticker-wrap {
+    position: fixed; top: 70px; left: 0; right: 0; z-index: 190;
+    background: var(--sage); overflow: hidden;
+    height: 34px; display: flex; align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  .ticker-track {
+    display: flex; white-space: nowrap;
+    animation: ticker-scroll 50s linear infinite;
+    will-change: transform;
+  }
+  .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
+  .ticker-item {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0 28px; font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.92); letter-spacing: .06em; text-transform: uppercase;
+  }
+  .ticker-item::after { content: '•'; margin-left: 28px; color: rgba(255,255,255,0.4); }
+  .ticker-ico { font-size: 14px; }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
   /* ── NAV ── */
   nav {
     position: fixed; top:0; left:0; right:0; z-index:200;
@@ -126,13 +152,48 @@
     color: #fff;
   }
 
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none; flex-direction: column; justify-content: center; gap: 5px;
+    width: 36px; height: 36px; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 9px;
+    padding: 8px; transition: border-color .18s; flex-shrink: 0;
+  }
+  .hamburger:hover { border-color: var(--border-s); }
+  .hamburger span { display: block; width: 100%; height: 2px; background: var(--text-mid); border-radius: 2px; transition: all .3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: none; position: fixed; top: 104px; left: 0; right: 0; z-index: 195;
+    background: var(--nav-bg); border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px); padding: 16px 20px 24px;
+    flex-direction: column; gap: 4px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 15px; font-weight: 500; color: var(--text-mid); text-decoration: none;
+    padding: 12px 16px; border-radius: 10px; transition: background .18s, color .18s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mobile-menu a:hover { background: var(--sage-pale); color: var(--sage); }
+  .mobile-menu .m-divider { height: 1px; background: var(--border); margin: 8px 0; }
+  .mobile-menu .m-cta {
+    background: var(--sage); color: #fff !important; border-radius: 40px;
+    text-align: center; justify-content: center; margin-top: 4px; font-weight: 600;
+  }
+  .mobile-menu .m-cta:hover { background: var(--sage-mid) !important; }
+
   /* ── HERO ── */
   .hero {
     min-height: 100vh;
     background: var(--bg-alt);
     display: grid; grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
-    padding: 110px 64px 80px; gap: 72px;
+    padding: 144px 64px 80px; gap: 72px;
     transition: background .3s;
   }
 
@@ -291,7 +352,9 @@
   @media (max-width:880px) {
     nav { padding:0 16px; }
     .nav-links { display:none; }
-    .hero { grid-template-columns:1fr; padding:110px 20px 60px; gap:40px; }
+    .btn-cta { display:none; }
+    .hamburger { display:flex; }
+    .hero { grid-template-columns:1fr; padding:148px 20px 60px; gap:40px; }
     .hero-right { display:none; }
     .sec { padding:64px 20px; }
     .about-grid, .contact-grid { grid-template-columns:1fr; gap:36px; }
@@ -309,6 +372,55 @@
 <body>
 
 <div class="toast" id="toast"></div>
+
+
+<!-- ══════════════ TICKER ══════════════ -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item fr"><span class="ticker-ico">🏗️</span> Bâtiment &amp; Génie Civil</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🔒</span> Étanchéité SBS</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🏠</span> Charpente &amp; Couverture</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🔧</span> Plomberie</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🪵</span> Menuiserie Bois</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🎨</span> Staff &amp; Peinture</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🛣️</span> VRD</span>
+    <span class="ticker-item fr"><span class="ticker-ico">💻</span> Informatique &amp; Électricité</span>
+    <span class="ticker-item fr"><span class="ticker-ico">📊</span> Comptabilité &amp; Fiscalité</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🎓</span> Formation &amp; Conseils</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item fr"><span class="ticker-ico">🏗️</span> Bâtiment &amp; Génie Civil</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🔒</span> Étanchéité SBS</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🏠</span> Charpente &amp; Couverture</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🔧</span> Plomberie</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🪵</span> Menuiserie Bois</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🎨</span> Staff &amp; Peinture</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🛣️</span> VRD</span>
+    <span class="ticker-item fr"><span class="ticker-ico">💻</span> Informatique &amp; Électricité</span>
+    <span class="ticker-item fr"><span class="ticker-ico">📊</span> Comptabilité &amp; Fiscalité</span>
+    <span class="ticker-item fr"><span class="ticker-ico">🎓</span> Formation &amp; Conseils</span>
+    <!-- EN -->
+    <span class="ticker-item en"><span class="ticker-ico">🏗️</span> Building &amp; Civil Engineering</span>
+    <span class="ticker-item en"><span class="ticker-ico">🔒</span> SBS Waterproofing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🏠</span> Roofing &amp; Framing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🔧</span> Plumbing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🪵</span> Woodwork &amp; Joinery</span>
+    <span class="ticker-item en"><span class="ticker-ico">🎨</span> Plastering &amp; Painting</span>
+    <span class="ticker-item en"><span class="ticker-ico">🛣️</span> VRD</span>
+    <span class="ticker-item en"><span class="ticker-ico">💻</span> IT &amp; Electricity</span>
+    <span class="ticker-item en"><span class="ticker-ico">📊</span> Accounting &amp; Tax</span>
+    <span class="ticker-item en"><span class="ticker-ico">🎓</span> Training &amp; Advisory</span>
+    <span class="ticker-item en"><span class="ticker-ico">🏗️</span> Building &amp; Civil Engineering</span>
+    <span class="ticker-item en"><span class="ticker-ico">🔒</span> SBS Waterproofing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🏠</span> Roofing &amp; Framing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🔧</span> Plumbing</span>
+    <span class="ticker-item en"><span class="ticker-ico">🪵</span> Woodwork &amp; Joinery</span>
+    <span class="ticker-item en"><span class="ticker-ico">🎨</span> Plastering &amp; Painting</span>
+    <span class="ticker-item en"><span class="ticker-ico">🛣️</span> VRD</span>
+    <span class="ticker-item en"><span class="ticker-ico">💻</span> IT &amp; Electricity</span>
+    <span class="ticker-item en"><span class="ticker-ico">📊</span> Accounting &amp; Tax</span>
+    <span class="ticker-item en"><span class="ticker-ico">🎓</span> Training &amp; Advisory</span>
+  </div>
+</div>
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav>
@@ -329,12 +441,31 @@
       <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
     </div>
     <button class="icon-btn" id="themeBtn" title="Theme">🌙</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
     <a href="#contact" class="btn-cta">
       <span class="fr">Devis gratuit</span>
       <span class="en">Free Quote</span>
     </a>
   </div>
 </nav>
+
+<!-- ══════════════ MOBILE MENU ══════════════ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()"><span>🏗️</span> <span class="fr">Services</span><span class="en">Services</span></a>
+  <a href="#about" onclick="closeMenu()"><span>🏢</span> <span class="fr">À propos</span><span class="en">About</span></a>
+  <a href="#clients" onclick="closeMenu()"><span>🤝</span> <span class="fr">Clients</span><span class="en">Clients</span></a>
+  <a href="#contact" onclick="closeMenu()"><span>📞</span> <span class="fr">Contact</span><span class="en">Contact</span></a>
+  <div class="m-divider"></div>
+  <a href="tel:+237695923457" onclick="closeMenu()"><span>📞</span> +237 695 923 457</a>
+  <a href="tel:+237677505751" onclick="closeMenu()"><span>📱</span> +237 677 505 751</a>
+  <div class="m-divider"></div>
+  <a href="#contact" class="m-cta" onclick="closeMenu()">
+    <span class="fr">✉ Devis gratuit</span><span class="en">✉ Free Quote</span>
+  </a>
+</div>
+
 
 <!-- ══════════════ HERO ══════════════ -->
 <section class="hero">
@@ -384,7 +515,8 @@
       <div>
         <div class="band-lbl fr">Nous appeler</div>
         <div class="band-lbl en">Call us</div>
-        <div class="band-val">695 92 34 57</div>
+        <div class="band-val">+237 695 923 457</div>
+        <div class="band-val" style="font-size:17px;margin-top:4px;opacity:.85;">+237 677 505 751</div>
       </div>
       <div class="band-ico">📞</div>
     </div>
@@ -426,7 +558,7 @@
         <div class="about-card-txt fr">Fondée à Douala, Class Concept réunit les compétences en bâtiment, génie civil et services aux entreprises sous un même toit.</div>
         <div class="about-card-txt en">Based in Douala, Class Concept brings together expertise in construction, civil engineering and business services under one roof.</div>
         <div class="about-details">
-          <div class="arow"><div class="arow-ico">📞</div>695 92 34 57</div>
+          <div class="arow"><div class="arow-ico">📞</div>+237 695 923 457 · +237 677 505 751</div>
           <div class="arow"><div class="arow-ico">⏰</div><span class="fr">Lundi – Samedi · 7h30 – 18h00</span><span class="en">Mon – Sat · 7:30am – 6:00pm</span></div>
           <div class="arow"><div class="arow-ico">⚡</div><span class="fr">Devis gratuit sous 24h</span><span class="en">Free quote within 24h</span></div>
         </div>
@@ -478,7 +610,7 @@
     <p class="sec-desc en">Free quote, no commitment. Describe your need and we will get back to you within 24 hours.</p>
     <div class="contact-grid">
       <div class="c-cards">
-        <div class="c-card"><div class="c-ico">📞</div><div><div class="c-lbl fr">Téléphone</div><div class="c-lbl en">Phone</div><div class="c-val">695 92 34 57</div><div class="c-sub">Appels &amp; WhatsApp</div></div></div>
+        <div class="c-card"><div class="c-ico">📞</div><div><div class="c-lbl fr">Téléphone</div><div class="c-lbl en">Phone</div><div class="c-val">+237 695 923 457</div><div class="c-sub">+237 677 505 751 · Appels &amp; WhatsApp</div></div></div>
         <div class="c-card"><div class="c-ico">⏰</div><div><div class="c-lbl fr">Horaires</div><div class="c-lbl en">Opening hours</div><div class="c-val fr">Lundi – Samedi</div><div class="c-val en">Monday – Saturday</div><div class="c-sub fr">7h30 – 18h00</div><div class="c-sub en">7:30am – 6:00pm</div></div></div>
         <div class="c-card"><div class="c-ico">⚡</div><div><div class="c-lbl fr">Délai devis</div><div class="c-lbl en">Quote turnaround</div><div class="c-val fr">Moins de 24h</div><div class="c-val en">Under 24 hours</div><div class="c-sub fr">Gratuit &amp; sans engagement</div><div class="c-sub en">Free &amp; no commitment</div></div></div>
         <!-- Carte adresse visuelle -->
@@ -560,7 +692,9 @@
       <p class="f-about en">Based in Douala, Class Concept supports individuals, businesses and institutions in their construction, management and development projects.</p>
       <div class="f-contact-strip">
         <a href="tel:+237695923457" class="f-contact-item">
-          <span class="f-contact-ico">📞</span><span>695 92 34 57</span>
+          <div class="f-contact-ico">📞</div>+237 695 923 457</a>
+        <a href="tel:+237677505751" class="f-contact-item">
+          <div class="f-contact-ico">📱</div>+237 677 505 751
         </a>
       </div>
     </div>
@@ -622,6 +756,23 @@
   });
 
   /* ── LANGUE ── */
+  function toggleMenu() {
+    var h = document.getElementById('hamburger');
+    var m = document.getElementById('mobileMenu');
+    h.classList.toggle('open');
+    m.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+  document.addEventListener('click', function(e) {
+    var h = document.getElementById('hamburger');
+    var m = document.getElementById('mobileMenu');
+    if (m && m.classList.contains('open') && !h.contains(e.target) && !m.contains(e.target)) closeMenu();
+  });
+  window.addEventListener('scroll', function() { closeMenu(); }, { passive: true });
+
   function setLang(lang) {
     document.documentElement.setAttribute('data-lang', lang);
     document.documentElement.setAttribute('lang', lang);
@@ -653,7 +804,7 @@
       : '<span class="en">⏳ Sending…</span>';
 
     try {
-      const res = await fetch('https://formspree.io/f/mnjkgade', {
+      const res = await fetch('https://formspree.io/f/xdkodgvj', {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
@@ -666,8 +817,8 @@
       } else { throw new Error(); }
     } catch {
       showToast(lang === 'fr'
-        ? '❌ Échec. Appelez-nous au 695 92 34 57.'
-        : '❌ Failed. Please call us at 695 92 34 57.', 'error');
+        ? '❌ Échec. Appelez-nous au +237 695 923 457.'
+        : '❌ Failed. Please call us at +237 695 923 457.', 'error');
     } finally {
       submitBtn.disabled = false;
       btnText.innerHTML = lang === 'fr'
